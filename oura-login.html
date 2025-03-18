@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oura Auto-Login</title>
+    <script>
+        function autoFillLogin() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const email = urlParams.get("email");
+            const password = urlParams.get("password");
+
+            if (email && password) {
+                // Redirect to Oura's login page
+                window.location.href = "https://cloud.ouraring.com/login";
+
+                // Wait and then auto-fill fields
+                setTimeout(() => {
+                    document.querySelector("input[type='email']").value = email;
+                    document.querySelector("input[type='password']").value = password;
+                }, 3000);
+            }
+        }
+    </script>
+</head>
+<body onload="autoFillLogin()">
+    <h2>Redirecting to Oura...</h2>
+</body>
+</html>
