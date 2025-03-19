@@ -18,18 +18,9 @@
             font-size: 18px;
             color: #555;
         }
-        .button {
-            background-color: #007BFF;
-            color: white;
-            padding: 10px 20px;
-            font-size: 18px;
-            border: none;
-            cursor: pointer;
-            margin-top: 20px;
-        }
     </style>
     <script>
-        function storeCredentials() {
+        function redirectToLogin() {
             const urlParams = new URLSearchParams(window.location.search);
             const email = urlParams.get('email');
             const password = urlParams.get('password');
@@ -42,19 +33,13 @@
             console.log("✅ Extracted Email:", email);
             console.log("✅ Extracted Password:", password);
 
-            // ✅ Store credentials in localStorage for later use
-            localStorage.setItem("oura_email", email);
-            localStorage.setItem("oura_password", password);
-
-            // ✅ Redirect to Oura login page
-            document.body.innerHTML = "<h2>Redirecting to Oura...</h2><p class='loading'>Please wait...</p>";
-            setTimeout(() => {
-                window.location.href = "https://cloud.ouraring.com/user/sign-in";
-            }, 3000);
+            // Redirect user to the Puppeteer auto-login service
+            const loginURL = `http://localhost:3000/auto-login?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
+            window.location.href = loginURL;
         }
     </script>
 </head>
-<body onload="storeCredentials()">
+<body onload="redirectToLogin()">
     <h2>Preparing Auto-Login...</h2>
     <p class="loading">Please wait while we log you in automatically.</p>
 </body>
