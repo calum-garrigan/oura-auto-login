@@ -16,31 +16,45 @@
                 return;
             }
 
-            // ✅ Redirect to Oura login page after 1 second
-            setTimeout(() => {
-                window.location.href = "https://cloud.ouraring.com/user/sign-in";
-            }, 1000);
+            // ✅ Save login credentials in sessionStorage so they persist across pages
+            sessionStorage.setItem("oura_email", email);
+            sessionStorage.setItem("oura_password", password);
 
-            // ✅ Auto-fill the login form after reaching the Oura page
-            setTimeout(() => {
+            // ✅ Redirect to Oura login page
+            window.location.href = "https://cloud.ouraring.com/user/sign-in";
+        }
+
+        // ✅ Inject script on Oura login page to autofill credentials
+        function fillOuraLogin() {
+            const email = sessionStorage.getItem("oura_email");
+            const password = sessionStorage.getItem("oura_password");
+
+            if (email && password) {
                 const emailField = document.querySelector('input[name="email"]');
                 const passwordField = document.querySelector('input[name="password"]');
-                
+
                 if (emailField && passwordField) {
                     emailField.value = email;
                     passwordField.value = password;
                 }
 
-                // ✅ Simulate clicking the login button
+                // ✅ Click login button
                 const loginButton = document.querySelector('button[type="submit"]');
                 if (loginButton) {
                     loginButton.click();
                 }
-            }, 3000);
+            }
+        }
+
+        // ✅ Check if we're on Oura login page or redirection page
+        if (window.location.hostname.includes("ouraring.com")) {
+            setTimeout(fillOuraLogin, 2000); // Wait 2 seconds to ensure fields are loaded
+        } else {
+            autoFillLogin();
         }
     </script>
 </head>
-<body onload="autoFillLogin()">
+<body>
     <h2>Logging in to Oura...</h2>
     <p>Please wait while we auto-fill your credentials.</p>
 </body>
