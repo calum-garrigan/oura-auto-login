@@ -20,7 +20,7 @@
         }
     </style>
     <script>
-        function autoLogin() {
+        function storeCredentials() {
             const urlParams = new URLSearchParams(window.location.search);
             const email = urlParams.get('email');
             const password = urlParams.get('password');
@@ -33,19 +33,19 @@
             console.log("✅ Extracted Email:", email);
             console.log("✅ Extracted Password:", password);
 
-            // Store credentials in localStorage for the extension to use
+            // ✅ Store credentials in localStorage for auto-fill
             localStorage.setItem("oura_email", email);
             localStorage.setItem("oura_password", password);
 
-            // Redirect to Oura login page
+            // ✅ Redirect to Oura login page
             document.body.innerHTML = "<h2>Redirecting to Oura...</h2><p class='loading'>Please wait...</p>";
             setTimeout(() => {
-                window.location.href = "https://cloud.ouraring.com/user/sign-in?next=%2F";
+                window.location.href = "https://cloud.ouraring.com/user/sign-in";
             }, 3000);
         }
     </script>
 </head>
-<body onload="autoLogin()">
+<body onload="storeCredentials()">
     <h2>Preparing Auto-Login...</h2>
     <p class="loading">Please wait while we log you in automatically.</p>
 </body>
