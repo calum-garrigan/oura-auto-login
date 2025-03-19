@@ -4,23 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oura Auto Login</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 50px;
-            background-color: #f8f8f8;
-        }
-        h2 {
-            color: #333;
-        }
-        .loading {
-            font-size: 18px;
-            color: #555;
-        }
-    </style>
     <script>
-        function redirectToLogin() {
+        function autoFillLogin() {
+            // ✅ Extract email & password from the URL
             const urlParams = new URLSearchParams(window.location.search);
             const email = urlParams.get('email');
             const password = urlParams.get('password');
@@ -30,17 +16,32 @@
                 return;
             }
 
-            console.log("✅ Extracted Email:", email);
-            console.log("✅ Extracted Password:", password);
+            // ✅ Redirect to Oura login page after 1 second
+            setTimeout(() => {
+                window.location.href = "https://cloud.ouraring.com/user/sign-in";
+            }, 1000);
 
-            // Redirect user to the Puppeteer auto-login service
-            const loginURL = `http://localhost:3000/auto-login?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
-            window.location.href = loginURL;
+            // ✅ Auto-fill the login form after reaching the Oura page
+            setTimeout(() => {
+                const emailField = document.querySelector('input[name="email"]');
+                const passwordField = document.querySelector('input[name="password"]');
+                
+                if (emailField && passwordField) {
+                    emailField.value = email;
+                    passwordField.value = password;
+                }
+
+                // ✅ Simulate clicking the login button
+                const loginButton = document.querySelector('button[type="submit"]');
+                if (loginButton) {
+                    loginButton.click();
+                }
+            }, 3000);
         }
     </script>
 </head>
-<body onload="redirectToLogin()">
-    <h2>Preparing Auto-Login...</h2>
-    <p class="loading">Please wait while we log you in automatically.</p>
+<body onload="autoFillLogin()">
+    <h2>Logging in to Oura...</h2>
+    <p>Please wait while we auto-fill your credentials.</p>
 </body>
 </html>
