@@ -4,6 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oura Auto Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background-color: #f8f8f8;
+        }
+        h2 {
+            color: #333;
+        }
+        .loading {
+            font-size: 18px;
+            color: #555;
+        }
+    </style>
     <script>
         function autoLogin() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -15,13 +30,23 @@
                 return;
             }
 
+            console.log("✅ Extracted Email:", email);
+            console.log("✅ Extracted Password:", password);
+
+            // Store credentials in localStorage for the extension to use
+            localStorage.setItem("oura_email", email);
+            localStorage.setItem("oura_password", password);
+
             // Redirect to Oura login page
-            window.location.href = "https://cloud.ouraring.com/user/sign-in?next=%2F";
+            document.body.innerHTML = "<h2>Redirecting to Oura...</h2><p class='loading'>Please wait...</p>";
+            setTimeout(() => {
+                window.location.href = "https://cloud.ouraring.com/user/sign-in?next=%2F";
+            }, 3000);
         }
     </script>
 </head>
 <body onload="autoLogin()">
-    <h2>Logging into Oura...</h2>
-    <p>Please wait while we log you in.</p>
+    <h2>Preparing Auto-Login...</h2>
+    <p class="loading">Please wait while we log you in automatically.</p>
 </body>
 </html>
