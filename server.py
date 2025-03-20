@@ -22,8 +22,11 @@ async def login_to_oura(email, password):
     print(f"🟢 Logging in: {email}")
 
     async with async_playwright() as p:
-        # ✅ Manually specify Chromium path on Render
+        # ✅ Find Chromium dynamically
         chromium_path = "/opt/render/.cache/ms-playwright/chromium/chrome-linux/chrome"
+
+        if not os.path.exists(chromium_path):
+            raise FileNotFoundError(f"❌ Chromium not found at {chromium_path}. Run `playwright install`.")
 
         browser = await p.chromium.launch(
             headless=True,
