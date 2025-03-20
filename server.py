@@ -1,5 +1,6 @@
 import os
 import asyncio
+import threading
 from flask import Flask, request, jsonify
 from playwright.async_api import async_playwright
 
@@ -8,6 +9,12 @@ app = Flask(__name__)
 @app.route("/")
 def home():
     return "<h1>✅ Flask Server Running on Render!</h1>"
+
+def run_async_task(coroutine):
+    """ Run an async function in a separate thread """
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    return loop.run_until_complete(coroutine)
 
 async def login_to_oura(email, password):
     """ Automates Oura login using Playwright """
@@ -43,16 +50,17 @@ async def login_to_oura(email, password):
             return False
 
 @app.route("/auto-login", methods=["GET"])
-async def auto_login():
+def auto_login():
     """ API Endpoint to trigger Playwright login """
-    
+
     email = request.args.get("email")
     password = request.args.get("password")
 
     if not email or not password:
         return jsonify({"error": "Missing email or password"}), 400
 
-    success = await login_to_oura(email, password)
+    # ✅ Run Playwright inside a separate thread
+    success = run_async_task(login_to_oura(email, password))
 
     if success:
         return jsonify({"message": "✅ Auto-login successful!"})
