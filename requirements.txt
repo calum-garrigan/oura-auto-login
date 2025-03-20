@@ -1,6 +1,5 @@
 flask
-selenium
-chromedriver-autoinstaller
+playwright
 gunicorn
 pandas
 qrcode
