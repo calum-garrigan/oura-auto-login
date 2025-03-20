@@ -3,14 +3,14 @@ import qrcode
 from urllib.parse import urlencode
 import os
 
-# ✅ Use your actual Render-hosted URL
+# ✅ Your hosted Flask server URL
 AUTO_LOGIN_URL = "https://oura-auto-login.onrender.com/auto-login"
 
 # ✅ Load user credentials from an Excel file
-excel_file = "Oura_login.xlsx"  # Ensure this file is in the repo
+excel_file = "Oura_login.xlsx"
 users = pd.read_excel(excel_file)
 
-# ✅ Create a folder for storing QR codes
+# ✅ Create a folder for QR codes
 output_folder = "qr_codes"
 os.makedirs(output_folder, exist_ok=True)
 
@@ -19,14 +19,14 @@ for index, row in users.iterrows():
     email = row['Email']
     password = row['Password']
 
-    # ✅ Encode credentials in the URL
+    # ✅ Encode credentials in URL format
     login_params = urlencode({"email": email, "password": password})
     login_url = f"{AUTO_LOGIN_URL}?{login_params}"
 
-    # ✅ Generate the QR Code
+    # ✅ Generate QR Code
     qr = qrcode.make(login_url)
 
-    # ✅ Save the QR code with email as the filename
+    # ✅ Save the QR code
     qr_filename = f"{email.replace('@', '_at_').replace('.', '_')}.png"
     qr_path = os.path.join(output_folder, qr_filename)
     qr.save(qr_path)
