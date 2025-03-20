@@ -1,9 +1,8 @@
-from flask import Flask, request, jsonify, render_template_string
+from flask import Flask, request, jsonify
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
@@ -15,22 +14,34 @@ app = Flask(__name__)
 OURA_LOGIN_URL = "https://cloud.ouraring.com/user/sign-in"
 
 def login_to_oura(email, password):
-    """Uses Selenium to log into Oura automatically."""
+    """Logs into Oura automatically using Selenium."""
     
-    options = Options()
-    options.add_argument("--headless")  # Run in headless mode (no GUI)
-    options.add_argument("--disable-gpu")
-    options.add_argument("--window-size=1280x1024")
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
-    
-    service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service, options=options)
-    wait = WebDriverWait(driver, 10)
-
     try:
+        # ✅ Setup Chrome options
+        options = Options()
+        options.add_argument("--headless")  # Run in headless mode
+        options.add_argument("--disable-gpu")
+        options.add_argument("--window-size=1280x1024")
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-dev-shm-usage")
+
+        # ✅ Debug: Check if ChromeDriver installs correctly
+        try:
+            driver_path = ChromeDriverManager().install()
+            service = Service(driver_path)
+        except Exception as e:
+            print(f"❌ ChromeDriver Install Failed: {e}")
+            return False
+
+        driver = webdriver.Chrome(service=service, options=options)
+        wait = WebDriverWait(driver, 10)
+
+        # ✅ Open Oura login page
         driver.get(OURA_LOGIN_URL)
         print(f"🔑 Navigated to {OURA_LOGIN_URL}")
+
+        # ✅ Debugging: Check page title to confirm it's loaded
+        print(f"📄 Page title: {driver.title}")
 
         # ✅ Enter Email
         email_field = wait.until(EC.presence_of_element_located((By.XPATH, "//*[@id='email']")))
@@ -45,15 +56,15 @@ def login_to_oura(email, password):
         # ✅ Click Sign-In
         sign_in_button = wait.until(EC.element_to_be_clickable((By.XPATH, '//button[text()="Sign In"]')))
         driver.execute_script("arguments[0].click();", sign_in_button)
-        
+
         time.sleep(5)  # Wait for login process
-        
+
         print(f"✅ Successfully logged into Oura for {email}")
 
         return True  # Login successful
     
     except Exception as e:
-        print(f"❌ Login Failed: {e}")
+        print(f"❌ Login Failed: {e}")  # Debugging message
         return False
 
     finally:
