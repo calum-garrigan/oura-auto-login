@@ -22,7 +22,7 @@ async def login_to_oura(email, password):
     print(f"🟢 Logging in: {email}")
 
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=True)  # ✅ Let Playwright find Chromium
+        browser = await p.chromium.launch(headless=True)  # ✅ Let Playwright find Chromium automatically
         page = await browser.new_page()
 
         try:
