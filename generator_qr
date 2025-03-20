@@ -3,10 +3,10 @@ import qrcode
 from urllib.parse import urlencode
 import os
 
-# ✅ Render-hosted Flask server URL
-AUTO_LOGIN_URL = "https://oura-auto-login.onrender.com"
+# ✅ Use your actual Render-hosted URL
+AUTO_LOGIN_URL = "https://oura-auto-login.onrender.com/auto-login"
 
-# ✅ Load user credentials from Excel
+# ✅ Load user credentials from an Excel file
 excel_file = "Oura_login.xlsx"  # Ensure this file is in the repo
 users = pd.read_excel(excel_file)
 
