@@ -6,17 +6,23 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import time
-import chromedriver_autoinstaller
 
 app = Flask(__name__)
 
-# ✅ Install Chrome on Render
+# ✅ Manually Install Google Chrome & ChromeDriver on Render
 def install_chrome():
-    if not os.path.exists("/usr/bin/google-chrome"):
-        print("🚀 Installing Google Chrome on Render...")
-        subprocess.run("wget -q -O /tmp/chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb", shell=True)
-        subprocess.run("apt update && apt install -y /tmp/chrome.deb", shell=True)
-        print("✅ Google Chrome Installed!")
+    print("🚀 Installing Google Chrome & ChromeDriver on Render...")
+
+    # Install Google Chrome
+    subprocess.run("wget -q -O /tmp/chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb", shell=True)
+    subprocess.run("apt update && apt install -y /tmp/chrome.deb", shell=True)
+
+    # Install ChromeDriver
+    subprocess.run("wget -q -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/114.0.5735.90/chromedriver_linux64.zip", shell=True)
+    subprocess.run("unzip /tmp/chromedriver.zip -d /usr/local/bin/", shell=True)
+    subprocess.run("chmod +x /usr/local/bin/chromedriver", shell=True)
+
+    print("✅ Chrome & ChromeDriver Installed!")
 
 # ✅ Call the function before running Selenium
 install_chrome()
@@ -30,17 +36,15 @@ def login_to_oura(email, password):
     
     print(f"🟢 Logging in: {email}")
 
-    # ✅ Ensure ChromeDriver is installed
-    chromedriver_autoinstaller.install()
-
-    # ✅ Set Chrome options to use the installed version
+    # ✅ Set Chrome options
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("--headless")  # Run in background
     chrome_options.add_argument("--no-sandbox")  
     chrome_options.add_argument("--disable-dev-shm-usage")  
     chrome_options.binary_location = "/usr/bin/google-chrome"
 
-    driver = webdriver.Chrome(service=Service(), options=chrome_options)
+    # ✅ Manually set ChromeDriver path
+    driver = webdriver.Chrome(service=Service("/usr/local/bin/chromedriver"), options=chrome_options)
 
     try:
         print("🌍 Navigating to Oura login page...")
