@@ -4,7 +4,7 @@ from urllib.parse import urlencode
 import os
 
 # ✅ Render-hosted Flask server URL
-AUTO_LOGIN_URL = "https://oura-auto-login.onrender.com/auto-login"
+AUTO_LOGIN_URL = "https://oura-auto-login.onrender.com"
 
 # ✅ Load user credentials from Excel
 excel_file = "Oura_login.xlsx"  # Ensure this file is in the repo
