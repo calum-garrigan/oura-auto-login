@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oura Auto-Login</title>
+    <script>
+        window.onload = function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const email = urlParams.get("email");
+            const password = urlParams.get("password");
+
+            if (email && password) {
+                // ✅ Show bookmarklet link
+                document.getElementById("bookmarklet").href = 
+                    `javascript:(function(){document.querySelector('input[name="email"]').value='${email}'; document.querySelector('input[name="password"]').value='${password}'; document.querySelector('input[name="password"]').dispatchEvent(new Event('input'));document.querySelector('input[name="password"]').form.submit();})();`;
+
+                document.getElementById("info").innerHTML = `
+                    <p>✅ Auto-login bookmarklet created! Drag this link to your bookmarks bar:</p>
+                    <a id="bookmarklet" href="#">Oura Auto-Login</a>
+                    <p>🔹 Once on the Oura login page, click the bookmark to log in.</p>
+                `;
+            }
+        };
+    </script>
+</head>
+<body>
+    <h2>Oura Auto-Login</h2>
+    <div id="info">
+        <p>Loading...</p>
+    </div>
+</body>
+</html>
