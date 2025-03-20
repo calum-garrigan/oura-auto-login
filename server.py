@@ -22,10 +22,7 @@ async def login_to_oura(email, password):
     print(f"🟢 Logging in: {email}")
 
     async with async_playwright() as p:
-        browser = await p.chromium.launch(
-            headless=True, 
-            executable_path="/opt/render/.cache/ms-playwright/chromium/chrome-linux/chrome"  # Correct Chromium path
-        )
+        browser = await p.chromium.launch(headless=True)  # ✅ Let Playwright find Chromium
         page = await browser.new_page()
 
         try:
