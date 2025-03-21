@@ -3,22 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Oura Quick Login</title>
+  <title>Oura QR Login</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>👋 Oura Login Credentials</h1>
-  <p>Tap to copy each credential, then paste it into the Oura login screen.</p>
+  <h1>👋 Welcome to Oura Quick Login</h1>
 
   <div class="credentials-box">
-    <p><strong>Email:</strong> <span id="emailDisplay">...</span></p>
-    <button onclick="copyOne('email')">📋 Copy Email</button>
+    <p><strong>Email:</strong></p>
+    <p id="emailDisplay" class="code"></p>
+    <button onclick="copyToClipboard('email')">📋 Copy Email</button>
 
-    <p style="margin-top: 20px;"><strong>Password:</strong> <span id="passwordDisplay">...</span></p>
-    <button onclick="copyOne('password')">📋 Copy Password</button>
+    <p><strong>Password:</strong></p>
+    <p id="passwordDisplay" class="code"></p>
+    <button onclick="copyToClipboard('password')">📋 Copy Password</button>
   </div>
 
-  <p class="status" id="status">Ready to copy.</p>
+  <p class="tip">✳️ After copying your email, click below to open Oura login in a new tab.<br/>
+  Then switch back here to copy your password.</p>
+
+  <p id="status" class="status">Ready to copy.</p>
 
   <button id="loginBtn">🔐 Go to Oura Login</button>
 
