@@ -1,33 +1,21 @@
-let email = "";
-let password = "";
-
 window.onload = () => {
-  const params = new URLSearchParams(window.location.search);
-  email = params.get("email") || "";
-  password = params.get("password") || "";
+  const urlParams = new URLSearchParams(window.location.search);
+  const email = urlParams.get("email");
+  const password = urlParams.get("password");
 
-  if (!email || !password) {
-    document.body.innerHTML = "<h2>❌ Invalid QR code: missing email or password.</h2>";
-    return;
+  if (email && password) {
+    const loginInfo = `${email}\n${password}`;
+
+    navigator.clipboard.writeText(loginInfo).then(() => {
+      console.log("✅ Credentials copied to clipboard.");
+    }).catch((err) => {
+      console.error("❌ Clipboard copy failed:", err);
+    });
+  } else {
+    document.body.innerHTML = "<h2>❌ Missing login credentials in the QR code URL.</h2>";
   }
 
-  document.getElementById("emailDisplay").textContent = email;
-  document.getElementById("passwordDisplay").textContent = password;
-
   document.getElementById("loginBtn").addEventListener("click", () => {
-    window.open("https://cloud.ouraring.com/user/sign-in", "_blank");
+    window.location.href = "https://cloud.ouraring.com/user/sign-in";
   });
 };
-
-function copyToClipboard(type) {
-  const value = type === 'email' ? email : password;
-
-  navigator.clipboard.writeText(value)
-    .then(() => {
-      document.getElementById("status").textContent = `✅ ${type.charAt(0).toUpperCase() + type.slice(1)} copied!`;
-    })
-    .catch(err => {
-      document.getElementById("status").textContent = `❌ Failed to copy ${type}.`;
-      console.error(err);
-    });
-}
