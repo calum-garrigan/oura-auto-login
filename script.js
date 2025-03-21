@@ -14,19 +14,18 @@ window.onload = () => {
     return;
   }
 
-  copyToClipboard();
-
   document.getElementById("loginBtn").addEventListener("click", () => {
     window.open("https://cloud.ouraring.com/user/sign-in", "_blank");
   });
 };
 
-function copyToClipboard() {
-  const combined = `${email}\n${password}`;
-  navigator.clipboard.writeText(combined).then(() => {
-    document.getElementById("status").textContent = "✅ Copied both email and password to clipboard.";
+function copyOne(type) {
+  const value = type === "email" ? email : password;
+
+  navigator.clipboard.writeText(value).then(() => {
+    document.getElementById("status").textContent = `✅ ${type.charAt(0).toUpperCase() + type.slice(1)} copied to clipboard.`;
   }).catch((err) => {
-    document.getElementById("status").textContent = "❌ Could not copy to clipboard.";
+    document.getElementById("status").textContent = "❌ Could not copy.";
     console.error(err);
   });
 }
