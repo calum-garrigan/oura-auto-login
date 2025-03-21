@@ -3,15 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Oura Quick Login</title>
+  <title>Oura Login Assistant</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>👋 Welcome to Oura Setup</h1>
-  <p>Your login info has been copied to your clipboard.</p>
-  <p><strong>Paste</strong> it into the login screen that opens next.</p>
+  <h1>🔐 Oura Login Helper</h1>
 
-  <button id="loginBtn">🔐 Go to Oura Login</button>
+  <div class="container">
+    <p><strong>Email:</strong> <span id="emailDisplay" class="code"></span></p>
+    <p><strong>Password:</strong> <span id="passwordDisplay" class="code"></span></p>
+
+    <button onclick="copyBoth()">📋 Copy Email + Password</button>
+    <button id="loginBtn">🔗 Go to Oura Login</button>
+
+    <p id="status" class="status">Ready.</p>
+    <p class="note">Paste both into a note or split manually into login fields.</p>
+  </div>
 
   <script src="script.js"></script>
 </body>
