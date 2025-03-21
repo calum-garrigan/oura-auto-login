@@ -6,27 +6,30 @@ window.onload = () => {
   email = params.get("email") || "";
   password = params.get("password") || "";
 
+  document.getElementById("email").value = email;
+  document.getElementById("password").value = password;
+
   if (!email || !password) {
-    document.body.innerHTML = "<h2>❌ Invalid QR link: missing email or password.</h2>";
+    document.getElementById("status").textContent = "❌ Missing email or password in QR code.";
+    document.getElementById("copyBtn").disabled = true;
+    document.getElementById("loginBtn").disabled = true;
     return;
   }
 
-  document.getElementById("emailDisplay").textContent = email;
-  document.getElementById("passwordDisplay").textContent = password;
-
-  document.getElementById("loginBtn").addEventListener("click", () => {
-    window.open("https://cloud.ouraring.com/user/sign-in", "_blank");
-  });
+  document.getElementById("status").textContent = "✅ Info loaded from QR.";
 };
 
-function copyBoth() {
-  const combined = `Email: ${email}\nPassword: ${password}`;
+document.getElementById("copyBtn").addEventListener("click", () => {
+  const combined = `${email}\n${password}`;
   navigator.clipboard.writeText(combined)
     .then(() => {
       document.getElementById("status").textContent = "✅ Copied both email & password!";
     })
-    .catch(err => {
+    .catch(() => {
       document.getElementById("status").textContent = "❌ Failed to copy.";
-      console.error(err);
     });
-}
+});
+
+document.getElementById("loginBtn").addEventListener("click", () => {
+  window.open("https://cloud.ouraring.com/user/sign-in", "_blank");
+});
