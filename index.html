@@ -7,19 +7,19 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>👋 Oura Setup</h1>
-  <p>We've copied your email and password to your clipboard.</p>
-  <p>Paste them into the login screen that opens next.</p>
+  <h1>👋 Oura Login Credentials</h1>
+  <p>Tap to copy each credential, then paste it into the Oura login screen.</p>
 
   <div class="credentials-box">
     <p><strong>Email:</strong> <span id="emailDisplay">...</span></p>
-    <p><strong>Password:</strong> <span id="passwordDisplay">...</span></p>
+    <button onclick="copyOne('email')">📋 Copy Email</button>
+
+    <p style="margin-top: 20px;"><strong>Password:</strong> <span id="passwordDisplay">...</span></p>
+    <button onclick="copyOne('password')">📋 Copy Password</button>
   </div>
 
-  <p class="status" id="status">📋 Copying credentials...</p>
-  <button onclick="copyToClipboard()">🔁 Re-copy Credentials</button>
+  <p class="status" id="status">Ready to copy.</p>
 
-  <br><br>
   <button id="loginBtn">🔐 Go to Oura Login</button>
 
   <script src="script.js"></script>
