@@ -1,50 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oura Auto-Login</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script>
-        window.onload = function () {
-            const urlParams = new URLSearchParams(window.location.search);
-            const email = urlParams.get("email");
-            const password = urlParams.get("password");
-            const loginURL = "https://cloud.ouraring.com/login";
-
-            if (email && password) {
-                const autoLoginScript = 
-                    `javascript:(function(){` +
-                    `document.querySelector('input[name="email"]').value='${email}';` +
-                    `document.querySelector('input[name="password"]').value='${password}';` +
-                    `document.querySelector('input[name="password"]').dispatchEvent(new Event('input'));` +
-                    `document.querySelector('input[name="password"]').form.submit();` +
-                    `})();`;
-
-                document.getElementById("bookmarklet").href = autoLoginScript;
-                document.getElementById("info").innerHTML = `
-                    <p>✅ Auto-login bookmarklet created! Drag this link to your bookmarks bar:</p>
-                    <a id="bookmarklet" href="#">Oura Auto-Login</a>
-                    <p>🔹 Once on the Oura login page, click the bookmark to log in.</p>
-                `;
-
-                // Generate QR Code for login URL with credentials
-                new QRCode(document.getElementById("qrcode"), {
-                    text: loginURL + `?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`,
-                    width: 200,
-                    height: 200
-                });
-            } else {
-                document.getElementById("info").innerHTML = `<p>❌ No login details found in the URL.</p>`;
-            }
-        };
-    </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Oura Quick Login</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <h2>Oura Auto-Login</h2>
-    <div id="info">
-        <p>Loading...</p>
-    </div>
-    <div id="qrcode"></div>
+  <h1>👋 Welcome to Oura Setup</h1>
+  <p>Below are your login credentials. We've copied them to your clipboard.</p>
+
+  <div class="credentials-box">
+    <p><strong>Email:</strong> <span id="emailDisplay">...</span></p>
+    <p><strong>Password:</strong> <span id="passwordDisplay">...</span></p>
+  </div>
+
+  <p class="status" id="status">📋 Copying credentials...</p>
+
+  <button id="loginBtn">🔐 Go to Oura Login</button>
+
+  <script src="script.js"></script>
 </body>
 </html>
